@@ -1,0 +1,47 @@
+import { Cart } from "./cart";
+
+//addProduct
+/* const cart1 = new Cart([], 0, []);
+cart1.printCatalog();
+cart1.addProduct('DL002', 2);
+cart1.addProduct('SP003', 3);
+cart1.addProduct('DL002', 3);
+console.log(cart1.totalPrice); */
+//ponovno dodam isti produkt, da vidim kako se to v košraici pokaže :)
+//cart.addProduct('DL002', 2);
+
+//mogoče je kul, da te teste pišem kr v testni scenarije in za vsako metodo to spišem in naredim 
+//in imam potem na koncu koncu toliko manj dela? :) jst mislem da je to ful logično, pa da vse pokrijem in že zdj dam to vn
+//test1: dodam produkt, ki ga ni v katalogu
+//test2: dodam produkt ni važn katerga, preverim da prav sesteje ceno
+//test3: dodam drug produkt, preverim ceno
+//test4 dodam ponovno prvi prdukt z novo količno - to morem kasneje prevert kako bi blo z atributi.
+
+//removeProduct
+/* const cart2 = new Cart([], 0, []);
+cart2.printCatalog();
+cart2.addProduct('DL002', 2);
+cart2.addProduct('SP003', 3);
+cart2.addProduct('DL002', 3);
+console.log(cart2.totalPrice);
+
+cart2.removeProduct(0); */
+
+//cart2.setAttributeValue(0, )
+
+//setAttribute
+const cart3 = new Cart([], 0, []);
+cart3.printCatalog();
+cart3.addProduct('DL002', 1);
+cart3.setAttributeValue(0, "brightness", 250);
+//cart3.addProduct('SP003', 1);
+//cart3.setAttributeValue(1, )
+
+//console.log ali piši v nek fajl?
+console.log(cart3.toJson());
+
+console.log(cart3.totalPrice);
+
+
+
+console.log("very good Darja");
