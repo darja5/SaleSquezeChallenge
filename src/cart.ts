@@ -16,25 +16,11 @@ export class Cart {
         console.log(this.catalog);
     }
 
-    /* createCatalogWithAdditionalFields(catalog : any[]) : void {
-        let cat =  catalog.map((item: any) => {
-            item["atributes"].map((att : Map<string, any>)=> {
-                att.set("required", false);
-                att.set("disabled", false);
-            });
-        });
-        this.catalog = cat;
-    } */
-
     //Adds a product to the cart by its catalog key
     addProduct(productKey: string, quantity: number): void {
         // dodam total price in tax v tax.
         //test: če je prazen katalog
 
-        //if catalog has any products and the product was not privously added to the cart
-        //ali bi mogu imet ta product v mapu Product type?
-
-        //mogoče bi tu nastavila v katalogu od tega produkta
         let productExistsInCatalog = false;
         if(this.catalog.length > 0){
             this.catalog.map(productCatalog => {
@@ -57,7 +43,6 @@ export class Cart {
                         this.products.push(newProduct);
                         this.totalPrice = this.totalPrice + productCatalog.price * quantity;
                         let calculatedTax = (productCatalog.tax * productCatalog.price * quantity / 100);
-                        //this.taxValues = {...this.taxValues, [productCatalog.tax]: calculatedTax};
                         this.setNewTaxValues();
                     
                     //}
@@ -69,7 +54,6 @@ export class Cart {
 
     //Removes a product from the cart by its line item index.
     removeProduct(cartIndex: number): void {
-        //je mišljeno sploh tko kot si jst predstavljam, da se ti seštevajo kr v cartu isti produkti, al bolj ne?
         const productToBeRemoved : Product = this.products[cartIndex];
         console.log(productToBeRemoved.getProductTitle);
 
@@ -79,39 +63,41 @@ export class Cart {
         this.setNewTaxValues();
     }
 
-    //ta bo rekurzivna
-    calculateCondition(condition: any, index: number): boolean {
-        console.log("rekurzija");
-    
-        console.log(condition.type, condition.key, condition.compareValue, condition.operator);
+    calculateConditions (condition: any, index: number): boolean {
+        if(condition.type  === "and"){
+            //console.log(condition.conditions[0]);
+            return this.calculateConditions(condition.conditions[0], index) && this.calculateConditions(condition.conditions[1], index);
+        }
+        if(condition.type === "or"){
+            return this.calculateConditions(condition.conditions[0], index) ||  this.calculateConditions(condition.conditions[1], index);
+        }
+        else{
+            return this.calculateCondition(condition, index);
+        }
+    }
+
+    calculateCondition (condition: any, index: number): boolean {
         if (condition.type == "attribute") {
-            //console.log(this.toJson());
             let attributeKey = condition.key;
             let conditionAttributeValue = this.products[index].getProductAttributes[condition.key];
             switch (condition.operator) {
                 case "gte": {
-                    if(conditionAttributeValue >= condition.compareValue){
+                    if(conditionAttributeValue != undefined && conditionAttributeValue >= condition.compareValue){
                         return true;
                     }
-                    else {
-                        return false;
-                    }
+                    return false;
                 }
                 case "eq": {
-                    if(conditionAttributeValue === condition.compareValue){
+                    if(conditionAttributeValue != undefined && conditionAttributeValue === condition.compareValue){
                         return true;
                     }
-                    else {
-                        return false;
-                    }
+                    return false;
                 }
                 case "includes": {
-                    if(conditionAttributeValue.includes(condition.compareValue)){
+                    if(conditionAttributeValue != undefined && conditionAttributeValue.includes(condition.compareValue)){
                         return true;
                     }
-                    else {
-                        return false;
-                    }
+                    return false;
                 }
             }
         }
@@ -160,31 +146,39 @@ export class Cart {
                 case "attribute": {
                     //loh je tudi false?
                     if (outcome.disabled != undefined &&  outcome.disabled){
-                        //let exists = false;
-
                         this.products[index].setProductAttributes = {...this.products[index].getProductAttributes, [outcome.key]:null};
                     }
 
                     else if (outcome.required != undefined &&  outcome.required){
-                        //gre iskat default value in ga da v attributes
-                        let defaultValue
-                        this.products[index].setProductAttributes = {...this.products[index].getProductAttributes, [outcome.key]:null};
+                        let targetCatalogProduct = this.catalog.find(element => 
+                            element.key === this.products[index].getProductKey);
+                        let targetAttribute = targetCatalogProduct.attributes.find((att:any) => att.key === outcome.key);
+                        let wantedValue: any;
+                        if(targetAttribute?.type != undefined){
+                            switch (targetAttribute.type){
+                                case "number":{
+                                    wantedValue = Math.floor(Math.random() * 1000);
+                                    break;
+                                }
+                                case "single-select": {
+                                    let i = Math.floor(Math.random() * targetAttribute.values.length);
+                                    wantedValue = targetAttribute.values[i];
+                                    break;
+                                }
+                                case "multi-select": {
+                                    wantedValue = targetAttribute.values;
+                                    let i = Math.floor(Math.random() * targetAttribute.values.length);
+                                    wantedValue = wantedValue.splice(i);
+                                    break;
+                                }
+                            }
+                        }
+                        this.products[index].setProductAttributes = {...this.products[index].getProductAttributes, [outcome.key]:wantedValue};
                     }
 
                     break;
-
-                    /* let newProductAttributes = product.getProductAttributes.map((att :any) => {
-                        if (outcome.key === att.key) return {[att]:null};
-                        else 
-                    }) */
-                    
-                    //key, disabled, required
-                    //če disabled
-                    //če obstaja ga popravi, če ne ga dopiši atributom
-
                 }
                 case "price": {
-                    //value
                     let oldPrice = product.getProductPrice * product.getProductQuantity;
                     product.setProductPrice = outcome.value;
                     this.totalPrice = this.totalPrice - oldPrice + outcome.value * product.getProductQuantity;
@@ -208,7 +202,6 @@ export class Cart {
         const targetCartProduct : Product = this.products[cartIndex];
 
         //check if value and atributeKey are valid parameters
-
         let targetCatalogProduct = this.catalog.find(element => 
             element.key === targetCartProduct.getProductKey);
 
@@ -221,7 +214,8 @@ export class Cart {
             console.log("Error in setAttributeValue, given attribute or attribute value are not valid.")
         }
 
-        //check if there are attributes that are dependant on this added attribute and add them (if all dependant values are added)
+        //check if there are attributes that are dependant on this added attribute and add them to product in the cart
+        // (if all dependant values are added)
         let dependantAttributes:any = [];
         targetCatalogProduct.attributes.map((att : any) => {
             if(att.key != attributeKey && att.dependsOn?.includes(attributeKey)) {
@@ -243,46 +237,14 @@ export class Cart {
             this.setAttributeValue(cartIndex, attr.key, newValueCalculated);
         })
 
-        //gre v rules od tega produkta, jih prebere in applya
-        //naredimo deconstruct za conditions and rules. nadaljujemo rekurzivno, če je condition
-
+        //recursivly check if conditions apply apply changes if neccessary
         if(targetCatalogProduct.rules){
             targetCatalogProduct.rules.map((rule: any) => {
-                if(this.calculateCondition(rule.condition, cartIndex)) {
+                if (this.calculateConditions(rule.condition, cartIndex)){
                     this.applyOutComes(rule.outcomes, cartIndex);
                 }
             })
         }
-       
-    
-
-        //preveri če rules sploh obstajajo
-        /* if(productWithRules?.hasOwnProperty("rules")){
-            let [productConditions, productOutcomes] = productWithRules.rules;
-            //console.log(productConditions, productOutcomes);
-            console.log("too dela! ;)");
-        } */
-        
-        //if (condition.length = 2) recurzivna funkcija   
-
-        //mislem da že tu pride recurzivna funkcija
-
-        //let [type, script, dependsOn, ] = condition;
-
-        //outcomes imajo tri možnosti, na katere vplivajo aatributes, price in tax torej to direkt vpliva na cart
-        //ne vem edino kaj nj naredim z  disable ali required - pomoje najbolš da ko preberem catalog, da vsakemu
-        //še dodam disabled in required ki bosta po defaultu false. potem pa se lahko jst prehajam čez vse te attibute od določenega
-        //izdelka in pogledam in preverim.. ter to sporočim uporabniku z obvestilom.**
-        // required in disabled se bo spreminjal glede na rules, ki bojo apllyani
-
-        //mogoče da gre na koncu čez attribute od tega izdelka in ga opozori, da more dodat ta in ta attribute..?
-
-
-        //attributes imajo  "key": "battery_capacity",
-        /* "type": "number",
-        "script": "brightness * 2",
-        "dependsOn": ["brightness"] */
-        //in če im
     }
 
 

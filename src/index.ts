@@ -39,10 +39,14 @@ cart3.setAttributeValue(0, "brightness", 250);
 cart3.setAttributeValue(1, "color", "white");
 cart3.removeProduct(1); */
 
-cart3.addProduct('SP003', 1);
+/* cart3.addProduct('SP003', 1);
 cart3.setAttributeValue(0, "color", "white");
 cart3.addProduct('SP003', 1);
-cart3.setAttributeValue(1, "color", "black");
+cart3.setAttributeValue(1, "color", "black"); */
+cart3.addProduct('EB001', 1);
+cart3.setAttributeValue(0, "battery_capacity", 600);
+cart3.setAttributeValue(0, "frame_material", "carbon");
+
 
 
 
