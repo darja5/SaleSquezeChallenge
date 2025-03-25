@@ -14,6 +14,22 @@
                     "silver"
                 ]
             }
+        ],
+        "rules": [
+            {
+                "condition": {
+                    "type": "attribute",
+                    "key": "color",
+                    "compareValue": "white",
+                    "operator": "eq"
+                },
+                "outcomes": [
+                    {
+                        "type": "price",
+                        "value": 900
+                    }
+                ]
+            }
         ]
     },
     {
@@ -58,6 +74,10 @@
                         "type": "attribute",
                         "key": "smart_features",
                         "disabled": true
+                    },
+                    {
+                        "type": "price",
+                        "value": 110
                     }
                 ]
             }

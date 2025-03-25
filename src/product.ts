@@ -5,8 +5,7 @@ export class Product {
         private price: number,
         private tax: number,
         private quantity: number,
-        private attributes: Map<string, any>,  //not required for now
-        private rules?: any[],
+        private attributes: {[att: string]: any},  //not required for now
     ){}
     
     //mislem da se contructorje setta ko ustvariš ta class, ko ga spreminjaš rabiš pa za vsak construktor svoj setter, 
@@ -30,7 +29,7 @@ export class Product {
     }
 
     //[key: string]: any
-    get getProductAttributes(): Map<string, any>{
+    get getProductAttributes(): {[att: string]: any}{
         return this.attributes;
     }
 
@@ -40,11 +39,17 @@ export class Product {
     set setProductTitle(title: string) {
         this.key = title;
     }
+    set setProductPrice(price: number) {
+        this.price = price;
+    }
+    set setProductTax(tax: number) {
+        this.tax = tax;
+    }
     set setProductQuantity(quantity: number){
         this.quantity = quantity;
     }
 
-    set setProductAttributes(attributes: Map<string, any>) {
+    set setProductAttributes(attributes: {[att: string]: any}) {
         this.attributes = attributes;
     }
 }

@@ -2,15 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Product = void 0;
 class Product {
-    constructor(key, title, price, tax, quantity, attributes, //not required for now
-    rules) {
+    constructor(key, title, price, tax, quantity, attributes) {
         this.key = key;
         this.title = title;
         this.price = price;
         this.tax = tax;
         this.quantity = quantity;
         this.attributes = attributes;
-        this.rules = rules;
     }
     //mislem da se contructorje setta ko ustvariš ta class, ko ga spreminjaš rabiš pa za vsak construktor svoj setter, 
     // pomoje getterjev ne rabim
@@ -38,6 +36,12 @@ class Product {
     }
     set setProductTitle(title) {
         this.key = title;
+    }
+    set setProductPrice(price) {
+        this.price = price;
+    }
+    set setProductTax(tax) {
+        this.tax = tax;
     }
     set setProductQuantity(quantity) {
         this.quantity = quantity;

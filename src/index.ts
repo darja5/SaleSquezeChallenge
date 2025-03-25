@@ -1,7 +1,8 @@
 import { Cart } from "./cart";
+import productsCatalog from './catalog.json';
 
 //addProduct
-/* const cart1 = new Cart([], 0, []);
+/* const cart1 = new Cart([], 0, [], productsCatalog);
 cart1.printCatalog();
 cart1.addProduct('DL002', 2);
 cart1.addProduct('SP003', 3);
@@ -18,7 +19,7 @@ console.log(cart1.totalPrice); */
 //test4 dodam ponovno prvi prdukt z novo količno - to morem kasneje prevert kako bi blo z atributi.
 
 //removeProduct
-/* const cart2 = new Cart([], 0, []);
+/* const cart2 = new Cart([], 0, [], productsCatalog);
 cart2.printCatalog();
 cart2.addProduct('DL002', 2);
 cart2.addProduct('SP003', 3);
@@ -30,18 +31,26 @@ cart2.removeProduct(0); */
 //cart2.setAttributeValue(0, )
 
 //setAttribute
-const cart3 = new Cart([], 0, []);
-cart3.printCatalog();
-cart3.addProduct('DL002', 1);
+const cart3 = new Cart([], 0, [], productsCatalog);
+//cart3.printCatalog();
+/* cart3.addProduct('DL002', 2);
+cart3.addProduct('SP003', 1);
 cart3.setAttributeValue(0, "brightness", 250);
+cart3.setAttributeValue(1, "color", "white");
+cart3.removeProduct(1); */
+
+cart3.addProduct('SP003', 1);
+cart3.setAttributeValue(0, "color", "white");
+cart3.addProduct('SP003', 1);
+cart3.setAttributeValue(1, "color", "black");
+
+
+
 //cart3.addProduct('SP003', 1);
-//cart3.setAttributeValue(1, )
 
 //console.log ali piši v nek fajl?
 console.log(cart3.toJson());
 
-console.log(cart3.totalPrice);
 
 
-
-console.log("very good Darja");
+console.log("");
