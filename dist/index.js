@@ -45,8 +45,8 @@ cart3.setAttributeValue(1, "color", "black"); */
 cart3.addProduct('EB001', 1);
 cart3.setAttributeValue(0, "battery_capacity", 600);
 cart3.setAttributeValue(0, "frame_material", "carbon");
+cart3.setAttributeValue(0, "extra_features", ["suspension", "GPS"]);
 //cart3.addProduct('SP003', 1);
-//console.log ali piši v nek fajl?
 console.log(cart3.toJson());
 console.log("");
 //# sourceMappingURL=index.js.map

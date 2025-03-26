@@ -55,7 +55,7 @@ export class Cart {
     //Removes a product from the cart by its line item index.
     removeProduct(cartIndex: number): void {
         const productToBeRemoved : Product = this.products[cartIndex];
-        console.log(productToBeRemoved.getProductTitle);
+        //console.log(productToBeRemoved.getProductTitle);
 
         this.totalPrice -= productToBeRemoved.getProductPrice * productToBeRemoved.getProductQuantity;
         this.products.splice(cartIndex, 1);
@@ -137,45 +137,68 @@ export class Cart {
         //this.taxValues = Object.assign({}, ...newTaxValues);
         this.taxValues = newTaxValues;
     }
+    /* productHasAttribute(attributeKey: string, index: number): boolean {
+        let product = this.products[index];
+
+        return false;
+    } */
 
     applyOutComes(outcomes: any[], index:number): void {
-        console.log("outcomes", outcomes);
+        //console.log("outcomes", outcomes);
         let product = this.products[index];
         outcomes.map(outcome => {
             switch(outcome.type) {
                 case "attribute": {
                     //loh je tudi false?
                     if (outcome.disabled != undefined &&  outcome.disabled){
+                        
                         this.products[index].setProductAttributes = {...this.products[index].getProductAttributes, [outcome.key]:null};
                     }
+                    
+                    if (outcome.required != undefined &&  outcome.required){
+                        //todo: najprej preveri, če ta attribut že obstaja in ni null. čega nima, ga lahko prepišeš
+                        /* let attributeAlreadyExists = product.getProductAttributes.find((att: any) => {
+                            att.key === outcome.key
+                        }) */
+                        let attributeKeyAlreadyExists = "";
+                        let attributeValueAlreadyExists = undefined;
 
-                    else if (outcome.required != undefined &&  outcome.required){
-                        let targetCatalogProduct = this.catalog.find(element => 
-                            element.key === this.products[index].getProductKey);
-                        let targetAttribute = targetCatalogProduct.attributes.find((att:any) => att.key === outcome.key);
-                        let wantedValue: any;
-                        if(targetAttribute?.type != undefined){
-                            switch (targetAttribute.type){
-                                case "number":{
-                                    wantedValue = Math.floor(Math.random() * 1000);
-                                    break;
-                                }
-                                case "single-select": {
-                                    let i = Math.floor(Math.random() * targetAttribute.values.length);
-                                    wantedValue = targetAttribute.values[i];
-                                    break;
-                                }
-                                case "multi-select": {
-                                    wantedValue = targetAttribute.values;
-                                    let i = Math.floor(Math.random() * targetAttribute.values.length);
-                                    wantedValue = wantedValue.splice(i);
-                                    break;
-                                }
+                        //mogoče je to rešitev za tist moj problem od tax values :)))
+                        for (let item in product.getProductAttributes) {
+                            if(item === outcome.key){
+                                attributeKeyAlreadyExists = item;
+                                attributeValueAlreadyExists = product.getProductAttributes[item];
                             }
                         }
-                        this.products[index].setProductAttributes = {...this.products[index].getProductAttributes, [outcome.key]:wantedValue};
-                    }
+                       //console.log("obstaja: key in value", attributeKeyAlreadyExists, attributeValueAlreadyExists);
 
+                        if(attributeKeyAlreadyExists != "" && attributeValueAlreadyExists[outcome.key] != null && attributeValueAlreadyExists[outcome.key] != undefined) {
+                            let targetCatalogProduct = this.catalog.find(element => 
+                                element.key === this.products[index].getProductKey);
+                            let targetAttribute = targetCatalogProduct.attributes.find((att:any) => att.key === outcome.key);
+                            let wantedValue: any;
+                            if(targetAttribute?.type != undefined){
+                                switch (targetAttribute.type){
+                                    case "number":{
+                                        wantedValue = Math.floor(Math.random() * 1000);
+                                        break;
+                                    }
+                                    case "single-select": {
+                                        let i = Math.floor(Math.random() * targetAttribute.values.length);
+                                        wantedValue = targetAttribute.values[i];
+                                        break;
+                                    }
+                                    case "multi-select": {
+                                        wantedValue = targetAttribute.values;
+                                        let i = Math.floor(Math.random() * targetAttribute.values.length);
+                                        wantedValue = wantedValue.splice(i);
+                                        break;
+                                    }
+                                }
+                            }
+                            this.products[index].setProductAttributes = {...this.products[index].getProductAttributes, [outcome.key]:wantedValue};
+                        }
+                    }
                     break;
                 }
                 case "price": {
@@ -195,6 +218,8 @@ export class Cart {
     }
 
 
+
+
     //Updates an attribute value for a specific product in the cart based on its line item index. 
     //This should validate rules and update the cart accordingly (e.g., disable attributes, apply price changes).
     setAttributeValue(cartIndex: number, attributeKey: string, value: any): void {
@@ -204,14 +229,48 @@ export class Cart {
         //check if value and atributeKey are valid parameters
         let targetCatalogProduct = this.catalog.find(element => 
             element.key === targetCartProduct.getProductKey);
-
-        let productAttributeWithValue = targetCatalogProduct.attributes.find((attribute : any) => attribute.key === attributeKey)   
         
-        if (productAttributeWithValue?.values?.includes(value) || productAttributeWithValue?.values?.includes(value) === undefined){
-            targetCartProduct.setProductAttributes = {...targetCartProduct.getProductAttributes, [attributeKey]: value};
-        }
-        else {
-            console.log("Error in setAttributeValue, given attribute or attribute value are not valid.")
+        let productAttributeWithValue = targetCatalogProduct.attributes.find((attribute : any) => attribute.key === attributeKey);
+
+        //check for validity of attribute types and if all checks out add the attribute(s) to the product in the cart
+        switch(productAttributeWithValue.type){
+            case "number": {
+                if(!(typeof value === "number")){
+                    console.log("Error, attribute value should be a number");
+                }
+                else {
+                    targetCartProduct.setProductAttributes = {...targetCartProduct.getProductAttributes, [attributeKey]: value};
+                }
+                break;
+            }
+            case "single-select": {
+                if(!(typeof value === "string")){
+                    console.log("Error, attribute value should be a string");
+                }
+                else {
+                    if (productAttributeWithValue?.values?.includes(value) || productAttributeWithValue?.values?.includes(value) === undefined){
+                        targetCartProduct.setProductAttributes = {...targetCartProduct.getProductAttributes, [attributeKey]: value};
+                    }
+                    else {
+                        console.log("Error in setAttributeValue, given attribute or attribute value are not valid.")
+                    }
+                }
+                break;
+            }
+            case "multi-select": {
+                let checkSubset = (parentArray:any[], subsetArray:any[]) => {
+                    return subsetArray.every((el: number|string) => {
+                        return parentArray.includes(el)
+                    })
+                }
+                if(Array.isArray(value) && checkSubset(productAttributeWithValue.values, value)){
+                    targetCartProduct.setProductAttributes = {...targetCartProduct.getProductAttributes, [attributeKey]: value};
+                }
+                else{
+                    console.log("Error in setAttributeValue, given attribute or attribute value are not valid.");
+                }
+                break;
+            }
         }
 
         //check if there are attributes that are dependant on this added attribute and add them to product in the cart
@@ -248,8 +307,7 @@ export class Cart {
     }
 
 
-    toJson(): any {
-        //ne dela dobro ima not catalog - ne vem kako ga nj dam vn? :) gremo dalje
+    toJson(): string {
         //sem pa vsaj popravla da objekte lepo prikazuje :)
         const currentCart = new Cart(this.products, this.totalPrice, this.taxValues, this.catalog, );
         currentCart.catalog = [];
