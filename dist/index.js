@@ -6,12 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cart_1 = require("./cart");
 const catalog_json_1 = __importDefault(require("./catalog.json"));
 //addProduct
-/* const cart1 = new Cart([], 0, [], productsCatalog);
-cart1.printCatalog();
-cart1.addProduct('DL002', 2);
-cart1.addProduct('SP003', 3);
-cart1.addProduct('DL002', 3);
-console.log(cart1.totalPrice); */
+const cart1 = new cart_1.Cart([], 0, [], catalog_json_1.default);
+cart1.addProduct("DL002", 2);
+cart1.addProduct("DL002", 2);
+//cart1.addProduct("SP003", 1);
+//cart1.setAttributeValue(1, "color", "black");
+//cart1.addProduct('SP003', 3);
+//cart1.addProduct('DL002', 3);
+console.log(cart1.toJson());
 //ponovno dodam isti produkt, da vidim kako se to v košraici pokaže :)
 //cart.addProduct('DL002', 2);
 //mogoče je kul, da te teste pišem kr v testni scenarije in za vsako metodo to spišem in naredim 
@@ -31,7 +33,7 @@ console.log(cart2.totalPrice);
 cart2.removeProduct(0); */
 //cart2.setAttributeValue(0, )
 //setAttribute
-const cart3 = new cart_1.Cart([], 0, [], catalog_json_1.default);
+//const cart3 = new Cart([], 0, [], productsCatalog);
 //cart3.printCatalog();
 /* cart3.addProduct('DL002', 2);
 cart3.addProduct('SP003', 1);
@@ -42,11 +44,16 @@ cart3.removeProduct(1); */
 cart3.setAttributeValue(0, "color", "white");
 cart3.addProduct('SP003', 1);
 cart3.setAttributeValue(1, "color", "black"); */
-cart3.addProduct('EB001', 1);
+/* cart3.addProduct('EB001', 1);
 cart3.setAttributeValue(0, "battery_capacity", 600);
 cart3.setAttributeValue(0, "frame_material", "carbon");
-cart3.setAttributeValue(0, "extra_features", ["suspension", "GPS"]);
+cart3.setAttributeValue(0, "extra_features", ["suspension","GPS"]);
+
 //cart3.addProduct('SP003', 1);
+
 console.log(cart3.toJson());
+
+
+*/
 console.log("");
 //# sourceMappingURL=index.js.map

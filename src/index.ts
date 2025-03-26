@@ -2,12 +2,14 @@ import { Cart } from "./cart";
 import productsCatalog from './catalog.json';
 
 //addProduct
-/* const cart1 = new Cart([], 0, [], productsCatalog);
-cart1.printCatalog();
-cart1.addProduct('DL002', 2);
-cart1.addProduct('SP003', 3);
-cart1.addProduct('DL002', 3);
-console.log(cart1.totalPrice); */
+const cart1 = new Cart([], 0, [], productsCatalog);
+cart1.addProduct("DL002", 2);
+cart1.addProduct("DL002", 2);
+//cart1.addProduct("SP003", 1);
+//cart1.setAttributeValue(1, "color", "black");
+//cart1.addProduct('SP003', 3);
+//cart1.addProduct('DL002', 3);
+console.log(cart1.toJson());
 //ponovno dodam isti produkt, da vidim kako se to v košraici pokaže :)
 //cart.addProduct('DL002', 2);
 
@@ -31,7 +33,7 @@ cart2.removeProduct(0); */
 //cart2.setAttributeValue(0, )
 
 //setAttribute
-const cart3 = new Cart([], 0, [], productsCatalog);
+//const cart3 = new Cart([], 0, [], productsCatalog);
 //cart3.printCatalog();
 /* cart3.addProduct('DL002', 2);
 cart3.addProduct('SP003', 1);
@@ -43,7 +45,7 @@ cart3.removeProduct(1); */
 cart3.setAttributeValue(0, "color", "white");
 cart3.addProduct('SP003', 1);
 cart3.setAttributeValue(1, "color", "black"); */
-cart3.addProduct('EB001', 1);
+/* cart3.addProduct('EB001', 1);
 cart3.setAttributeValue(0, "battery_capacity", 600);
 cart3.setAttributeValue(0, "frame_material", "carbon");
 cart3.setAttributeValue(0, "extra_features", ["suspension","GPS"]);
@@ -53,5 +55,5 @@ cart3.setAttributeValue(0, "extra_features", ["suspension","GPS"]);
 console.log(cart3.toJson());
 
 
-
-console.log("");
+*/
+console.log(""); 
