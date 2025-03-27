@@ -8,11 +8,11 @@ SaleSquezeChallenge solution is a product cart system that allows users to add/r
 
 ## Known Issues and Limitations
 
-When implementing constructor and getter both with name totalPrice or taxValues (as the challange suggests) I ran into Typescript error. I had to rename the getters for the code to work.
+While implementing both a constructor and getter with the same name (`totalPrice` and `taxValues`), as suggested in the challenge, I encountered a TypeScript error. This issue was caused by TypeScript's restrictions on having a constructor and getter with identical names. To resolve this, I had to rename the getters to ensure the code would work properly.
 
 ## Future Improvements
 
-There is still room for code improvment using less any types and constructing Cart claass in a way that both a getter and a contructors can have the same names.
+There is still room for improvement in the code, specifically regarding the use of `any` types. I plan to refine the code by reducing the use of `any` and implementing more specific types for better type safety. Additionally, there is a possibility to restructure the `Cart` class to allow both a getter and a constructor to have the same name without causing conflicts, which would streamline the code and make it more maintainable.
 
 ## Acknowledgments
 
@@ -24,7 +24,7 @@ To get started, clone the repository and install the required dependencies:
 
 ```bash
 # Clone the repository
-git clone https://github.com/darja5/SaleSquezeChallenge.git
+git clone https://github.com/darja5/SaleSquezeChallenge.git 
 
 # Install dependencies
 npm install
@@ -32,4 +32,3 @@ npm install
 # Run tests
 npm test
 
-```
