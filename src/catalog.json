@@ -1,214 +1,196 @@
 [
-    {
-      "key": "SP003",
-      "title": "Smartphone",
-      "price": 800,
-      "tax": 15,
-      "attributes": [
-        {
+  {
+    "key": "SP003",
+    "title": "Smartphone",
+    "price": 800,
+    "tax": 15,
+    "attributes": [
+      {
+        "key": "color",
+        "type": "single-select",
+        "values": ["black", "white", "silver"]
+      }
+    ],
+    "rules": [
+      {
+        "condition": {
+          "type": "attribute",
           "key": "color",
-          "type": "single-select",
-          "values": [
-            "black",
-            "white",
-            "silver"
-          ]
-        }
-      ],
-      "rules": [
-        {
-          "condition": {
-            "type": "attribute",
-            "key": "color",
-            "compareValue": "white",
-            "operator": "eq"
-          },
-          "outcomes": [
-            {
-              "type": "price",
-              "value": 900
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "key": "DL002",
-      "title": "Desk Lamp",
-      "price": 100,
-      "tax": 22,
-      "attributes": [
-        {
-          "key": "brightness",
-          "type": "number"
+          "compareValue": "white",
+          "operator": "eq"
         },
-        {
+        "outcomes": [
+          {
+            "type": "price",
+            "value": 900
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "DL002",
+    "title": "Desk Lamp",
+    "price": 100,
+    "tax": 22,
+    "attributes": [
+      {
+        "key": "brightness",
+        "type": "number"
+      },
+      {
+        "key": "battery_capacity",
+        "type": "number",
+        "script": "brightness * 2",
+        "dependsOn": ["brightness"]
+      },
+      {
+        "key": "smart_features",
+        "type": "multi-select",
+        "default": ["voice_control"],
+        "values": ["voice_control", "app_control", "dimmable"]
+      }
+    ],
+    "rules": [
+      {
+        "condition": {
+          "type": "attribute",
           "key": "battery_capacity",
-          "type": "number",
-          "script": "brightness * 2",
-          "dependsOn": ["brightness"]
+          "compareValue": 50,
+          "operator": "gte"
         },
-        {
-          "key": "smart_features",
-          "type": "multi-select",
-          "default": [
-            "voice_control"
-          ],
-          "values": [
-            "voice_control",
-            "app_control",
-            "dimmable"
-          ]
-        }
-      ],
-      "rules": [
-        {
-          "condition": {
+        "outcomes": [
+          {
             "type": "attribute",
-            "key": "battery_capacity",
-            "compareValue": 50,
-            "operator": "gte"
+            "key": "smart_features",
+            "disabled": true
           },
-          "outcomes": [
+          {
+            "type": "price",
+            "value": 110
+          }
+        ]
+      },
+      {
+        "condition": {
+          "type": "and",
+          "conditions": [
             {
               "type": "attribute",
-              "key": "smart_features",
-              "disabled": true
+              "key": "battery_capacity",
+              "compareValue": 49,
+              "operator": "lte"
             },
-            {
-              "type": "price",
-              "value": 110
-            }
-          ]
-        },
-        {
-          "condition": {
-            "type": "and",
-            "conditions": [
-              {
-                "type": "attribute",
-                "key": "battery_capacity",
-                "compareValue": 49,
-                "operator": "lte"
-              },
-              {
-                "type": "attribute",
-                "key": "battery_capacity",
-                "compareValue": 35,
-                "operator": "gte"
-              }
-            ]
-          },
-          "outcomes": [
             {
               "type": "attribute",
-              "key": "smart_features",
-              "required": true
-            },
-            {
-              "type": "price",
-              "value": 180
+              "key": "battery_capacity",
+              "compareValue": 35,
+              "operator": "gte"
             }
           ]
-        }
-      ]
-    },
-    {
-      "key": "EB001",
-      "title": "Electric Bike",
-      "price": 2500,
-      "tax": 22,
-      "attributes": [
-        {
-          "key": "battery_capacity",
-          "type": "number"
         },
-        {
-          "key": "frame_material",
-          "type": "single-select",
-          "values": [
-            "aluminum",
-            "carbon",
-            "steel"
-          ]
-        },
-        {
-          "key": "extra_features",
-          "type": "multi-select",
-          "values": [
-            "GPS",
-            "suspension",
-            "smart_lock"
-          ]
-        }
-      ],
-      "rules": [
-        {
-          "condition": {
-            "type": "and",
-            "conditions": [
-              {
-                "type": "attribute",
-                "key": "battery_capacity",
-                "compareValue": 500,
-                "operator": "gte"
-              },
-              {
-                "type": "or",
-                "conditions": [
-                  {
-                    "type": "attribute",
-                    "key": "frame_material",
-                    "compareValue": "carbon",
-                    "operator": "eq"
-                  },
-                  {
-                    "type": "attribute",
-                    "key": "extra_features",
-                    "compareValue": "suspension",
-                    "operator": "includes"
-                  }
-                ]
-              }
-            ]
+        "outcomes": [
+          {
+            "type": "attribute",
+            "key": "smart_features",
+            "required": true
           },
-          "outcomes": [
+          {
+            "type": "price",
+            "value": 180
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "EB001",
+    "title": "Electric Bike",
+    "price": 2500,
+    "tax": 22,
+    "attributes": [
+      {
+        "key": "battery_capacity",
+        "type": "number"
+      },
+      {
+        "key": "frame_material",
+        "type": "single-select",
+        "values": ["aluminum", "carbon", "steel"]
+      },
+      {
+        "key": "extra_features",
+        "type": "multi-select",
+        "values": ["GPS", "suspension", "smart_lock"]
+      }
+    ],
+    "rules": [
+      {
+        "condition": {
+          "type": "and",
+          "conditions": [
             {
-              "type": "price",
-              "value": 2800
+              "type": "attribute",
+              "key": "battery_capacity",
+              "compareValue": 500,
+              "operator": "gte"
             },
+            {
+              "type": "or",
+              "conditions": [
+                {
+                  "type": "attribute",
+                  "key": "frame_material",
+                  "compareValue": "carbon",
+                  "operator": "eq"
+                },
+                {
+                  "type": "attribute",
+                  "key": "extra_features",
+                  "compareValue": "suspension",
+                  "operator": "includes"
+                }
+              ]
+            }
+          ]
+        },
+        "outcomes": [
+          {
+            "type": "price",
+            "value": 2800
+          },
+          {
+            "type": "attribute",
+            "key": "extra_features",
+            "required": true
+          }
+        ]
+      },
+      {
+        "condition": {
+          "type": "or",
+          "conditions": [
             {
               "type": "attribute",
               "key": "extra_features",
-              "required": true
+              "compareValue": "GPS",
+              "operator": "includes"
+            },
+            {
+              "type": "attribute",
+              "key": "frame_material",
+              "compareValue": "steel",
+              "operator": "eq"
             }
           ]
         },
-        {
-          "condition": {
-            "type": "or",
-            "conditions": [
-              {
-                "type": "attribute",
-                "key": "extra_features",
-                "compareValue": "GPS",
-                "operator": "includes"
-              },
-              {
-                "type": "attribute",
-                "key": "frame_material",
-                "compareValue": "steel",
-                "operator": "eq"
-              }
-            ]
-          },
-          "outcomes": [
-            {
-              "type": "tax",
-              "value": 30
-            }
-          ]
-        }
-      ]
-    }
-  ]
+        "outcomes": [
+          {
+            "type": "tax",
+            "value": 30
+          }
+        ]
+      }
+    ]
+  }
+]

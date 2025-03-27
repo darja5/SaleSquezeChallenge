@@ -8,7 +8,7 @@ SaleSquezeChallenge solution is a product cart system that allows users to add/r
 
 ## Known Issues and Limitations
 
-When implementing constructor and getter both with name totalPrice or taxValues (as the challange suggests) I ran into Typescript error. I had to rename the getters for the code to work. 
+When implementing constructor and getter both with name totalPrice or taxValues (as the challange suggests) I ran into Typescript error. I had to rename the getters for the code to work.
 
 ## Future Improvements
 
@@ -24,7 +24,7 @@ To get started, clone the repository and install the required dependencies:
 
 ```bash
 # Clone the repository
-git clone https://github.com/darja5/SaleSquezeChallenge.git 
+git clone https://github.com/darja5/SaleSquezeChallenge.git
 
 # Install dependencies
 npm install
@@ -32,3 +32,4 @@ npm install
 # Run tests
 npm test
 
+```

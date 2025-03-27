@@ -8,11 +8,7 @@
             {
                 "key": "color",
                 "type": "single-select",
-                "values": [
-                    "black",
-                    "white",
-                    "silver"
-                ]
+                "values": ["black", "white", "silver"]
             }
         ],
         "rules": [
@@ -51,14 +47,8 @@
             {
                 "key": "smart_features",
                 "type": "multi-select",
-                "default": [
-                    "voice_control"
-                ],
-                "values": [
-                    "voice_control",
-                    "app_control",
-                    "dimmable"
-                ]
+                "default": ["voice_control"],
+                "values": ["voice_control", "app_control", "dimmable"]
             }
         ],
         "rules": [
@@ -126,20 +116,12 @@
             {
                 "key": "frame_material",
                 "type": "single-select",
-                "values": [
-                    "aluminum",
-                    "carbon",
-                    "steel"
-                ]
+                "values": ["aluminum", "carbon", "steel"]
             },
             {
                 "key": "extra_features",
                 "type": "multi-select",
-                "values": [
-                    "GPS",
-                    "suspension",
-                    "smart_lock"
-                ]
+                "values": ["GPS", "suspension", "smart_lock"]
             }
         ],
         "rules": [

@@ -2,10 +2,7 @@
 module.exports = {
   testEnvironment: "node",
   transform: {
-    "^.+\.tsx?$": ["ts-jest",{}],
+    "^.+\.tsx?$": ["ts-jest", {}],
   },
-  testPathIgnorePatterns: [
-    "dist",
-    "node_modules"
-  ]
+  testPathIgnorePatterns: ["dist", "node_modules"],
 };

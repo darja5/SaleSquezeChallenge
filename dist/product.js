@@ -10,7 +10,7 @@ class Product {
         this.quantity = quantity;
         this.attributes = attributes;
     }
-    //mislem da se contructorje setta ko ustvariš ta class, ko ga spreminjaš rabiš pa za vsak construktor svoj setter, 
+    //mislem da se contructorje setta ko ustvariš ta class, ko ga spreminjaš rabiš pa za vsak construktor svoj setter,
     // pomoje getterjev ne rabim
     get getProductKey() {
         return this.key;

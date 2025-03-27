@@ -13,13 +13,13 @@ class Cart {
     addProduct(productKey, quantity) {
         let productExistsInCatalog = false;
         if (this.catalog.length > 0 && (quantity > 0 || quantity <= 10)) {
-            this.catalog.map(productCatalog => {
+            this.catalog.map((productCatalog) => {
                 if (productCatalog.key === productKey) {
                     productExistsInCatalog = true;
                     let newProduct = new product_1.Product(productKey, productCatalog.title, productCatalog.price, productCatalog.tax, quantity, {});
                     this.products.push(newProduct);
                     this.totalPrice = this.totalPrice + productCatalog.price * quantity;
-                    let calculatedTax = (productCatalog.tax * productCatalog.price * quantity / 100);
+                    let calculatedTax = (productCatalog.tax * productCatalog.price * quantity) / 100;
                     this.setNewTaxValues();
                 }
             });
@@ -35,7 +35,9 @@ class Cart {
     removeProduct(cartIndex) {
         if (cartIndex > -1 && cartIndex < this.products.length) {
             const productToBeRemoved = this.products[cartIndex];
-            this.totalPrice -= productToBeRemoved.getProductPrice * productToBeRemoved.getProductQuantity;
+            this.totalPrice -=
+                productToBeRemoved.getProductPrice *
+                    productToBeRemoved.getProductQuantity;
             this.products.splice(cartIndex, 1);
             this.setNewTaxValues();
             if (this.products.length == 0) {
@@ -50,10 +52,12 @@ class Cart {
     }
     calculateConditions(condition, index) {
         if (condition.type === "and") {
-            return this.calculateConditions(condition.conditions[0], index) && this.calculateConditions(condition.conditions[1], index);
+            return (this.calculateConditions(condition.conditions[0], index) &&
+                this.calculateConditions(condition.conditions[1], index));
         }
         if (condition.type === "or") {
-            return this.calculateConditions(condition.conditions[0], index) || this.calculateConditions(condition.conditions[1], index);
+            return (this.calculateConditions(condition.conditions[0], index) ||
+                this.calculateConditions(condition.conditions[1], index));
         }
         else {
             return this.calculateCondition(condition, index);
@@ -65,25 +69,29 @@ class Cart {
             let conditionAttributeValue = this.products[index].getProductAttributes[condition.key];
             switch (condition.operator) {
                 case "gte": {
-                    if (conditionAttributeValue != undefined && conditionAttributeValue >= condition.compareValue) {
+                    if (conditionAttributeValue != undefined &&
+                        conditionAttributeValue >= condition.compareValue) {
                         return true;
                     }
                     return false;
                 }
                 case "lte": {
-                    if (conditionAttributeValue != undefined && conditionAttributeValue <= condition.compareValue) {
+                    if (conditionAttributeValue != undefined &&
+                        conditionAttributeValue <= condition.compareValue) {
                         return true;
                     }
                     return false;
                 }
                 case "eq": {
-                    if (conditionAttributeValue != undefined && conditionAttributeValue === condition.compareValue) {
+                    if (conditionAttributeValue != undefined &&
+                        conditionAttributeValue === condition.compareValue) {
                         return true;
                     }
                     return false;
                 }
                 case "includes": {
-                    if (conditionAttributeValue != undefined && conditionAttributeValue.includes(condition.compareValue)) {
+                    if (conditionAttributeValue != undefined &&
+                        conditionAttributeValue.includes(condition.compareValue)) {
                         return true;
                     }
                     return false;
@@ -94,8 +102,11 @@ class Cart {
     }
     setNewTaxValues() {
         let newTaxValues = {};
-        this.products.map(product => {
-            let newTaxValue = product.getProductPrice * product.getProductQuantity * product.getProductTax / 100;
+        this.products.map((product) => {
+            let newTaxValue = (product.getProductPrice *
+                product.getProductQuantity *
+                product.getProductTax) /
+                100;
             let newTax = product.getProductTax;
             newTaxValues = Object.assign(Object.assign({}, newTaxValues), { [newTax]: (newTaxValues[newTax] || 0) + newTaxValue });
         });
@@ -103,7 +114,7 @@ class Cart {
     }
     applyOutComes(outcomes, index) {
         let product = this.products[index];
-        outcomes.map(outcome => {
+        outcomes.map((outcome) => {
             switch (outcome.type) {
                 case "attribute": {
                     if (outcome.disabled != undefined && outcome.disabled) {
@@ -115,11 +126,13 @@ class Cart {
                         for (let item in product.getProductAttributes) {
                             if (item === outcome.key) {
                                 attributeKeyAlreadyExists = item;
-                                attributeValueAlreadyExists = product.getProductAttributes[item];
+                                attributeValueAlreadyExists =
+                                    product.getProductAttributes[item];
                             }
                         }
-                        if (attributeKeyAlreadyExists == "" && attributeValueAlreadyExists == undefined) {
-                            let targetCatalogProduct = this.catalog.find(element => element.key === this.products[index].getProductKey);
+                        if (attributeKeyAlreadyExists == "" &&
+                            attributeValueAlreadyExists == undefined) {
+                            let targetCatalogProduct = this.catalog.find((element) => element.key === this.products[index].getProductKey);
                             let targetAttribute = targetCatalogProduct.attributes.find((att) => att.key === outcome.key);
                             let wantedValue;
                             if ((targetAttribute === null || targetAttribute === void 0 ? void 0 : targetAttribute.type) != undefined) {
@@ -156,7 +169,10 @@ class Cart {
                 case "price": {
                     let oldPrice = product.getProductPrice * product.getProductQuantity;
                     product.setProductPrice = outcome.value;
-                    this.totalPrice = this.totalPrice - oldPrice + outcome.value * product.getProductQuantity;
+                    this.totalPrice =
+                        this.totalPrice -
+                            oldPrice +
+                            outcome.value * product.getProductQuantity;
                     this.setNewTaxValues();
                     break;
                 }
@@ -168,7 +184,7 @@ class Cart {
             }
         });
     }
-    //Updates an attribute value for a specific product in the cart based on its line item index. 
+    //Updates an attribute value for a specific product in the cart based on its line item index.
     //This should validate rules and update the cart accordingly (e.g., disable attributes, apply price changes).
     setAttributeValue(cartIndex, attributeKey, value) {
         var _a, _b;
@@ -177,7 +193,7 @@ class Cart {
         }
         const targetCartProduct = this.products[cartIndex];
         //check if value and atributeKey are valid parameters
-        let targetCatalogProduct = this.catalog.find(element => element.key === targetCartProduct.getProductKey);
+        let targetCatalogProduct = this.catalog.find((element) => element.key === targetCartProduct.getProductKey);
         let productAttributeWithValue = targetCatalogProduct.attributes.find((attribute) => attribute.key === attributeKey);
         //check for validity of attribute types and if all checks out, add the attribute(s) to the product in the cart
         if (productAttributeWithValue == undefined) {
@@ -198,7 +214,8 @@ class Cart {
                     throw new Error("Error, attribute value is not valid for this attribute.");
                 }
                 else {
-                    if (((_a = productAttributeWithValue === null || productAttributeWithValue === void 0 ? void 0 : productAttributeWithValue.values) === null || _a === void 0 ? void 0 : _a.includes(value)) || ((_b = productAttributeWithValue === null || productAttributeWithValue === void 0 ? void 0 : productAttributeWithValue.values) === null || _b === void 0 ? void 0 : _b.includes(value)) === undefined) {
+                    if (((_a = productAttributeWithValue === null || productAttributeWithValue === void 0 ? void 0 : productAttributeWithValue.values) === null || _a === void 0 ? void 0 : _a.includes(value)) ||
+                        ((_b = productAttributeWithValue === null || productAttributeWithValue === void 0 ? void 0 : productAttributeWithValue.values) === null || _b === void 0 ? void 0 : _b.includes(value)) === undefined) {
                         targetCartProduct.setProductAttributes = Object.assign(Object.assign({}, targetCartProduct.getProductAttributes), { [attributeKey]: value });
                     }
                     else {
@@ -213,7 +230,8 @@ class Cart {
                         return parentArray.includes(el);
                     });
                 };
-                if (Array.isArray(value) && checkSubset(productAttributeWithValue.values, value)) {
+                if (Array.isArray(value) &&
+                    checkSubset(productAttributeWithValue.values, value)) {
                     targetCartProduct.setProductAttributes = Object.assign(Object.assign({}, targetCartProduct.getProductAttributes), { [attributeKey]: value });
                 }
                 else {
@@ -231,18 +249,19 @@ class Cart {
                 dependantAttributes = [...dependantAttributes, att];
             }
         });
-        dependantAttributes && dependantAttributes.map((attr) => {
-            let script = attr.script;
-            attr.dependsOn.map((attName) => {
-                let prodAttValue = targetCartProduct.getProductAttributes[attName];
-                script = script.replace(attName, prodAttValue);
+        dependantAttributes &&
+            dependantAttributes.map((attr) => {
+                let script = attr.script;
+                attr.dependsOn.map((attName) => {
+                    let prodAttValue = targetCartProduct.getProductAttributes[attName];
+                    script = script.replace(attName, prodAttValue);
+                });
+                let newValueCalculated = eval(script);
+                if (isNaN(newValueCalculated)) {
+                    throw new Error("Error calculating the script, possibly missing attribute value.");
+                }
+                this.setAttributeValue(cartIndex, attr.key, newValueCalculated);
             });
-            let newValueCalculated = eval(script);
-            if (isNaN(newValueCalculated)) {
-                throw new Error("Error calculating the script, possibly missing attribute value.");
-            }
-            this.setAttributeValue(cartIndex, attr.key, newValueCalculated);
-        });
         //recursivly check if conditions apply => if yes apply outcomes
         if (targetCatalogProduct.rules) {
             targetCatalogProduct.rules.map((rule) => {
