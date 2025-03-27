@@ -175,7 +175,6 @@ class Cart {
         if (cartIndex < -1 || cartIndex > this.products.length) {
             throw new Error("Error, please check that the product index is correct.");
         }
-        //add cartIndex checking
         const targetCartProduct = this.products[cartIndex];
         //check if value and atributeKey are valid parameters
         let targetCatalogProduct = this.catalog.find(element => element.key === targetCartProduct.getProductKey);

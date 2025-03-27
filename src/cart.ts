@@ -188,7 +188,7 @@ export class Cart {
         if(cartIndex < -1 || cartIndex > this.products.length){
             throw new Error("Error, please check that the product index is correct.");
         }
-        //add cartIndex checking
+        
         const targetCartProduct : Product = this.products[cartIndex];
 
         //check if value and atributeKey are valid parameters
