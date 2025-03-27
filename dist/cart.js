@@ -12,7 +12,7 @@ class Cart {
     //Adds a product to the cart by its catalog key
     addProduct(productKey, quantity) {
         let productExistsInCatalog = false;
-        if (this.catalog.length > 0) {
+        if (this.catalog.length > 0 && (quantity > 0 || quantity <= 10)) {
             this.catalog.map(productCatalog => {
                 if (productCatalog.key === productKey) {
                     productExistsInCatalog = true;
@@ -24,6 +24,10 @@ class Cart {
                 }
             });
         }
+        if (quantity > 10)
+            throw new Error("Error, the number of products you are trying to add is too big");
+        if (quantity <= 0)
+            throw new Error("Error, the number of products you are trying to add is not valid.");
         if (!productExistsInCatalog)
             throw new Error("Error adding a product: Product key not found in catalog.");
     }
@@ -34,10 +38,15 @@ class Cart {
             this.totalPrice -= productToBeRemoved.getProductPrice * productToBeRemoved.getProductQuantity;
             this.products.splice(cartIndex, 1);
             this.setNewTaxValues();
+            if (this.products.length == 0) {
+                this.taxValues = [];
+                this.totalPrice = 0;
+            }
         }
-        else {
+        if (this.products.length == 0)
+            console.log("Error, you are trying to remove a product from an empty cart.");
+        if (cartIndex <= -1 || cartIndex >= this.products.length)
             console.log("Error, please check that the product index is correct.");
-        }
     }
     calculateConditions(condition, index) {
         if (condition.type === "and") {

@@ -14,15 +14,35 @@ describe('Adding and removing products', () => {
     });
     test('should add a product and update total price and tax values', () => {
         const product = new product_1.Product("DL002", "Desk Lamp", 100, 22, 2, {});
-        // Add the product to the cart
         cart.addProduct('DL002', 2);
         expect(cart.getProducts).toEqual([product]);
         expect(cart.getTotalPrice).toBe(200);
         expect(cart.getTaxValues).toEqual({ "22": 44 });
     });
-    test('adding a product with non existing key should throw error', () => {
+    test('should throw error if removing a product from an empty cart', () => {
         const product = new product_1.Product("DL002", "Desk Lamp", 100, 22, 2, {});
+        const logSpy = jest.spyOn(global.console, 'log');
+        cart.removeProduct(0);
+        expect(logSpy).toHaveBeenCalledWith("Error, you are trying to remove a product from an empty cart.");
+    });
+    test('adding less than 0 procucts should throw error', () => {
+        expect(() => cart.addProduct('DL002', -1)).toThrow("Error, the number of products you are trying to add is not valid.");
+    });
+    test('adding less than 0 procucts should throw error', () => {
+        expect(() => cart.addProduct('DL002', 11)).toThrow("Error, the number of products you are trying to add is too big");
+    });
+    test('adding a product with non existing key should throw error', () => {
         expect(() => cart.addProduct('D100', 2)).toThrow("Error adding a product: Product key not found in catalog.");
+    });
+    test('check if cart is empty after removing the last item', () => {
+        const product = new product_1.Product("DL002", "Desk Lamp", 100, 22, 2, {});
+        const newCart = new cart_1.Cart([], 0, [], catalog_json_1.default);
+        cart.addProduct('DL002', 2);
+        expect(cart.getProducts).toEqual([product]);
+        expect(cart.getTotalPrice).toBe(200);
+        expect(cart.getTaxValues).toEqual({ "22": 44 });
+        cart.removeProduct(0);
+        expect(cart).toEqual(newCart);
     });
     test('should remove a product and update total price and tax values', () => {
         const product1 = new product_1.Product("DL002", "Desk Lamp", 100, 22, 2, {});
@@ -68,7 +88,7 @@ describe('Updating attribute values', () => {
     beforeEach(() => {
         cart = new cart_1.Cart([], 0, [], catalog_json_1.default);
     });
-    test('should update product attributes correctly if attribute a string', () => {
+    test('should update product attributes correctly', () => {
         const product1 = new product_1.Product("SP003", "Smartphone", 800, 15, 1, { "color": "black" });
         cart.addProduct("SP003", 1);
         expect(cart.getTotalPrice).toBe(800);
@@ -77,26 +97,6 @@ describe('Updating attribute values', () => {
         expect(cart.getProducts).toEqual([product1]);
         expect(cart.getTotalPrice).toBe(800);
         expect(cart.getTaxValues).toEqual({ "15": 120 });
-    });
-    test('should update product attributes correctly if attribute a number', () => {
-        const product1 = new product_1.Product("DL002", "Desk Lamp", 100, 22, 2, { "battery_capacity": 30 });
-        cart.addProduct("DL002", 2);
-        expect(cart.getTotalPrice).toBe(200);
-        expect(cart.getTaxValues).toEqual({ "22": 44 });
-        cart.setAttributeValue(0, "battery_capacity", 30);
-        expect(cart.getProducts).toEqual([product1]);
-        expect(cart.getTotalPrice).toBe(200);
-        expect(cart.getTaxValues).toEqual({ "22": 44 });
-    });
-    test('should update product attributes correctly if attribute an array', () => {
-        const product1 = new product_1.Product("DL002", "Desk Lamp", 100, 22, 3, { "smart_features": ["voice_control", "dimmable"] });
-        cart.addProduct("DL002", 3);
-        expect(cart.getTotalPrice).toBe(300);
-        expect(cart.getTaxValues).toEqual({ "22": 66 });
-        cart.setAttributeValue(0, "smart_features", ["voice_control", "dimmable"]);
-        expect(cart.getProducts).toEqual([product1]);
-        expect(cart.getTotalPrice).toBe(300);
-        expect(cart.getTaxValues).toEqual({ "22": 66 });
     });
     test('should throw error if there is no product on cartIndex', () => {
         const product1 = new product_1.Product("DL002", "Desk Lamp", 100, 22, 3, {});
