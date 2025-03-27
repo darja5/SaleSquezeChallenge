@@ -26,6 +26,7 @@ export default [
       "semi": ["error", "always"],
       "quotes": ["error", "double"],
       "prettier/prettier": "error",
+      'no-console': 'off',
     },
   },
 ];

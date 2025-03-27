@@ -29,8 +29,6 @@ export class Cart {
           );
           this.products.push(newProduct);
           this.totalPrice = this.totalPrice + productCatalog.price * quantity;
-          let calculatedTax =
-            (productCatalog.tax * productCatalog.price * quantity) / 100;
           this.setNewTaxValues();
         }
       });
@@ -93,7 +91,6 @@ export class Cart {
 
   calculateCondition(condition: any, index: number): boolean {
     if (condition.type == "attribute") {
-      let attributeKey = condition.key;
       let conditionAttributeValue =
         this.products[index].getProductAttributes[condition.key];
       switch (condition.operator) {
@@ -249,7 +246,6 @@ export class Cart {
     if (cartIndex < -1 || cartIndex > this.products.length) {
       throw new Error("Error, please check that the product index is correct.");
     }
-
     const targetCartProduct: Product = this.products[cartIndex];
 
     //check if value and atributeKey are valid parameters
@@ -333,7 +329,7 @@ export class Cart {
       }
     });
 
-    dependantAttributes &&
+    if(dependantAttributes != undefined){
       dependantAttributes.map((attr: any) => {
         let script = attr.script;
 
@@ -350,6 +346,7 @@ export class Cart {
         }
         this.setAttributeValue(cartIndex, attr.key, newValueCalculated);
       });
+    }
 
     //recursivly check if conditions apply => if yes apply outcomes
     if (targetCatalogProduct.rules) {

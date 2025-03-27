@@ -19,8 +19,6 @@ describe("Adding and removing products", () => {
   });
 
   test("should throw error if removing a product from an empty cart", () => {
-    const product = new Product("DL002", "Desk Lamp", 100, 22, 2, {});
-
     const logSpy = jest.spyOn(global.console, "log");
     cart.removeProduct(0);
     expect(logSpy).toHaveBeenCalledWith(
@@ -265,16 +263,6 @@ describe("Calculating total price and tax values", () => {
   });
 
   test("should calculate total price and tax values on a bigger cart", () => {
-    const product1 = new Product("DL002", "Desk Lamp", 110, 22, 1, {
-      brightness: 250,
-      battery_capacity: 500,
-      smart_features: null,
-    });
-    const product2 = new Product("EB001", "Electric Bike", 2800, 30, 1, {
-      battery_capacity: 600,
-      frame_material: "carbon",
-      extra_features: ["GPS", "suspension"],
-    });
     cart.addProduct("DL002", 1);
     cart.addProduct("EB001", 1);
     cart.addProduct("DL002", 1);

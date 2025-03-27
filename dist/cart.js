@@ -19,7 +19,6 @@ class Cart {
                     let newProduct = new product_1.Product(productKey, productCatalog.title, productCatalog.price, productCatalog.tax, quantity, {});
                     this.products.push(newProduct);
                     this.totalPrice = this.totalPrice + productCatalog.price * quantity;
-                    let calculatedTax = (productCatalog.tax * productCatalog.price * quantity) / 100;
                     this.setNewTaxValues();
                 }
             });
@@ -65,7 +64,6 @@ class Cart {
     }
     calculateCondition(condition, index) {
         if (condition.type == "attribute") {
-            let attributeKey = condition.key;
             let conditionAttributeValue = this.products[index].getProductAttributes[condition.key];
             switch (condition.operator) {
                 case "gte": {
@@ -249,7 +247,7 @@ class Cart {
                 dependantAttributes = [...dependantAttributes, att];
             }
         });
-        dependantAttributes &&
+        if (dependantAttributes != undefined) {
             dependantAttributes.map((attr) => {
                 let script = attr.script;
                 attr.dependsOn.map((attName) => {
@@ -262,6 +260,7 @@ class Cart {
                 }
                 this.setAttributeValue(cartIndex, attr.key, newValueCalculated);
             });
+        }
         //recursivly check if conditions apply => if yes apply outcomes
         if (targetCatalogProduct.rules) {
             targetCatalogProduct.rules.map((rule) => {
