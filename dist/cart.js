@@ -41,7 +41,6 @@ class Cart {
     }
     calculateConditions(condition, index) {
         if (condition.type === "and") {
-            //console.log(condition.conditions[0]);
             return this.calculateConditions(condition.conditions[0], index) && this.calculateConditions(condition.conditions[1], index);
         }
         if (condition.type === "or") {
@@ -58,6 +57,12 @@ class Cart {
             switch (condition.operator) {
                 case "gte": {
                     if (conditionAttributeValue != undefined && conditionAttributeValue >= condition.compareValue) {
+                        return true;
+                    }
+                    return false;
+                }
+                case "lte": {
+                    if (conditionAttributeValue != undefined && conditionAttributeValue <= condition.compareValue) {
                         return true;
                     }
                     return false;
@@ -92,26 +97,23 @@ class Cart {
         outcomes.map(outcome => {
             switch (outcome.type) {
                 case "attribute": {
-                    //loh je tudi false?
                     if (outcome.disabled != undefined && outcome.disabled) {
                         this.products[index].setProductAttributes = Object.assign(Object.assign({}, this.products[index].getProductAttributes), { [outcome.key]: null });
                     }
                     if (outcome.required != undefined && outcome.required) {
                         let attributeKeyAlreadyExists = "";
                         let attributeValueAlreadyExists = undefined;
-                        //mogoče je to rešitev za tist moj problem od tax values :)))
                         for (let item in product.getProductAttributes) {
                             if (item === outcome.key) {
                                 attributeKeyAlreadyExists = item;
                                 attributeValueAlreadyExists = product.getProductAttributes[item];
                             }
                         }
-                        if (attributeKeyAlreadyExists != "" && attributeValueAlreadyExists[outcome.key] != null && attributeValueAlreadyExists[outcome.key] != undefined) {
+                        if (attributeKeyAlreadyExists == "" && attributeValueAlreadyExists == undefined) {
                             let targetCatalogProduct = this.catalog.find(element => element.key === this.products[index].getProductKey);
                             let targetAttribute = targetCatalogProduct.attributes.find((att) => att.key === outcome.key);
                             let wantedValue;
                             if ((targetAttribute === null || targetAttribute === void 0 ? void 0 : targetAttribute.type) != undefined) {
-                                // pri vsaki preveri, če obstaja default. če ja dodaj njega. čene prvega
                                 switch (targetAttribute.type) {
                                     case "number": {
                                         wantedValue = Math.floor(Math.random() * 1000);
@@ -122,7 +124,6 @@ class Cart {
                                             wantedValue = targetAttribute.default;
                                         }
                                         else {
-                                            //choose the first value
                                             wantedValue = targetAttribute.values[0];
                                         }
                                         break;
@@ -132,7 +133,6 @@ class Cart {
                                             wantedValue = targetAttribute.default;
                                         }
                                         else {
-                                            //choose the first value
                                             wantedValue = [targetAttribute.values[0]];
                                         }
                                         break;

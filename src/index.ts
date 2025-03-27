@@ -3,8 +3,20 @@ import productsCatalog from './catalog.json';
 
 //addProduct
 const cart1 = new Cart([], 0, [], productsCatalog);
-cart1.addProduct("DL002", 2);
-cart1.addProduct("DL002", 2);
+cart1.addProduct("DL002", 1);  
+cart1.addProduct("EB001", 1);
+cart1.addProduct("DL002", 1);
+cart1.addProduct("EB001", 1); 
+cart1.addProduct("SP003", 1); 
+cart1.addProduct("SP003", 1); 
+
+cart1.setAttributeValue(0, "brightness", 20);
+cart1.setAttributeValue(1, "battery_capacity", 600);  
+cart1.setAttributeValue(1, "frame_material", "carbon");  
+cart1.setAttributeValue(2, "brightness", 30);   
+cart1.setAttributeValue(3, "frame_material", "steel"); 
+cart1.setAttributeValue(4, "color", "white"); 
+cart1.setAttributeValue(5, "color", "silver"); 
 //cart1.addProduct("SP003", 1);
 //cart1.setAttributeValue(1, "color", "black");
 //cart1.addProduct('SP003', 3);

@@ -80,6 +80,36 @@
                         "value": 110
                     }
                 ]
+            },
+            {
+                "condition": {
+                    "type": "and",
+                    "conditions": [
+                        {
+                            "type": "attribute",
+                            "key": "battery_capacity",
+                            "compareValue": 49,
+                            "operator": "lte"
+                        },
+                        {
+                            "type": "attribute",
+                            "key": "battery_capacity",
+                            "compareValue": 35,
+                            "operator": "gte"
+                        }
+                    ]
+                },
+                "outcomes": [
+                    {
+                        "type": "attribute",
+                        "key": "smart_features",
+                        "required": true
+                    },
+                    {
+                        "type": "price",
+                        "value": 180
+                    }
+                ]
             }
         ]
     },
