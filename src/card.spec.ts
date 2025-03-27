@@ -1,11 +1,16 @@
 import { Cart } from "./cart";
-import productsCatalog from "./catalog.json";
+//import productsCatalog from "./catalog.json";
 import { Product } from "./product";
+import { CatalogProduct } from "./cart";
+import fs from "fs";
 
 //ADDING AND REMOVING PRODUCTS
 describe("Adding and removing products", () => {
   let cart: Cart;
   beforeEach(() => {
+    const productsCatalog: CatalogProduct[] = JSON.parse(
+      fs.readFileSync("./src/catalog.json", "utf-8"),
+    );
     cart = new Cart([], 0, [], productsCatalog);
   });
 
@@ -46,6 +51,9 @@ describe("Adding and removing products", () => {
 
   test("check if cart is empty after removing the last item", () => {
     const product = new Product("DL002", "Desk Lamp", 100, 22, 2, {});
+    const productsCatalog: CatalogProduct[] = JSON.parse(
+      fs.readFileSync("./src/catalog.json", "utf-8"),
+    );
     const newCart = new Cart([], 0, [], productsCatalog);
 
     cart.addProduct("DL002", 2);
@@ -108,6 +116,9 @@ describe("Updating attribute values", () => {
   let cart: Cart;
 
   beforeEach(() => {
+    const productsCatalog: CatalogProduct[] = JSON.parse(
+      fs.readFileSync("./src/catalog.json", "utf-8"),
+    );
     cart = new Cart([], 0, [], productsCatalog);
   });
 
@@ -167,6 +178,9 @@ describe("Updating rules and validating outcomes", () => {
   let cart: Cart;
 
   beforeEach(() => {
+    const productsCatalog: CatalogProduct[] = JSON.parse(
+      fs.readFileSync("./src/catalog.json", "utf-8"),
+    );
     cart = new Cart([], 0, [], productsCatalog);
   });
 
@@ -234,6 +248,9 @@ describe("Calculating total price and tax values", () => {
   let cart: Cart;
 
   beforeEach(() => {
+    const productsCatalog: CatalogProduct[] = JSON.parse(
+      fs.readFileSync("./src/catalog.json", "utf-8"),
+    );
     cart = new Cart([], 0, [], productsCatalog);
   });
 

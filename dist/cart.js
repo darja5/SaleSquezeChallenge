@@ -131,7 +131,7 @@ class Cart {
                         if (attributeKeyAlreadyExists == "" &&
                             attributeValueAlreadyExists == undefined) {
                             let targetCatalogProduct = this.catalog.find((element) => element.key === this.products[index].getProductKey);
-                            let targetAttribute = targetCatalogProduct.attributes.find((att) => att.key === outcome.key);
+                            let targetAttribute = targetCatalogProduct === null || targetCatalogProduct === void 0 ? void 0 : targetCatalogProduct.attributes.find((att) => att.key === outcome.key);
                             let wantedValue;
                             if ((targetAttribute === null || targetAttribute === void 0 ? void 0 : targetAttribute.type) != undefined) {
                                 switch (targetAttribute.type) {
@@ -192,7 +192,7 @@ class Cart {
         const targetCartProduct = this.products[cartIndex];
         //check if value and atributeKey are valid parameters
         let targetCatalogProduct = this.catalog.find((element) => element.key === targetCartProduct.getProductKey);
-        let productAttributeWithValue = targetCatalogProduct.attributes.find((attribute) => attribute.key === attributeKey);
+        let productAttributeWithValue = targetCatalogProduct === null || targetCatalogProduct === void 0 ? void 0 : targetCatalogProduct.attributes.find((attribute) => attribute.key === attributeKey);
         //check for validity of attribute types and if all checks out, add the attribute(s) to the product in the cart
         if (productAttributeWithValue == undefined) {
             throw new Error("Error, attribut cannot be set to this product.");
@@ -241,7 +241,7 @@ class Cart {
         //check if there are attributes that are dependant on this added attribute and add them to product in the cart
         //if all dependant values are added
         let dependantAttributes = [];
-        targetCatalogProduct.attributes.map((att) => {
+        targetCatalogProduct === null || targetCatalogProduct === void 0 ? void 0 : targetCatalogProduct.attributes.map((att) => {
             var _a;
             if (att.key != attributeKey && ((_a = att.dependsOn) === null || _a === void 0 ? void 0 : _a.includes(attributeKey))) {
                 dependantAttributes = [...dependantAttributes, att];
@@ -262,7 +262,7 @@ class Cart {
             });
         }
         //recursivly check if conditions apply => if yes apply outcomes
-        if (targetCatalogProduct.rules) {
+        if (targetCatalogProduct === null || targetCatalogProduct === void 0 ? void 0 : targetCatalogProduct.rules) {
             targetCatalogProduct.rules.map((rule) => {
                 if (this.calculateConditions(rule.condition, cartIndex)) {
                     this.applyOutComes(rule.outcomes, cartIndex);

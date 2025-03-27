@@ -4,13 +4,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const cart_1 = require("./cart");
-const catalog_json_1 = __importDefault(require("./catalog.json"));
+//import productsCatalog from "./catalog.json";
 const product_1 = require("./product");
+const fs_1 = __importDefault(require("fs"));
 //ADDING AND REMOVING PRODUCTS
 describe("Adding and removing products", () => {
     let cart;
     beforeEach(() => {
-        cart = new cart_1.Cart([], 0, [], catalog_json_1.default);
+        const productsCatalog = JSON.parse(fs_1.default.readFileSync("./src/catalog.json", "utf-8"));
+        cart = new cart_1.Cart([], 0, [], productsCatalog);
     });
     test("should add a product and update total price and tax values", () => {
         const product = new product_1.Product("DL002", "Desk Lamp", 100, 22, 2, {});
@@ -35,7 +37,8 @@ describe("Adding and removing products", () => {
     });
     test("check if cart is empty after removing the last item", () => {
         const product = new product_1.Product("DL002", "Desk Lamp", 100, 22, 2, {});
-        const newCart = new cart_1.Cart([], 0, [], catalog_json_1.default);
+        const productsCatalog = JSON.parse(fs_1.default.readFileSync("./src/catalog.json", "utf-8"));
+        const newCart = new cart_1.Cart([], 0, [], productsCatalog);
         cart.addProduct("DL002", 2);
         expect(cart.getProducts).toEqual([product]);
         expect(cart.getTotalPrice).toBe(200);
@@ -85,7 +88,8 @@ describe("Adding and removing products", () => {
 describe("Updating attribute values", () => {
     let cart;
     beforeEach(() => {
-        cart = new cart_1.Cart([], 0, [], catalog_json_1.default);
+        const productsCatalog = JSON.parse(fs_1.default.readFileSync("./src/catalog.json", "utf-8"));
+        cart = new cart_1.Cart([], 0, [], productsCatalog);
     });
     test("should update product attributes correctly", () => {
         const product1 = new product_1.Product("SP003", "Smartphone", 800, 15, 1, {
@@ -128,7 +132,8 @@ describe("Updating attribute values", () => {
 describe("Updating rules and validating outcomes", () => {
     let cart;
     beforeEach(() => {
-        cart = new cart_1.Cart([], 0, [], catalog_json_1.default);
+        const productsCatalog = JSON.parse(fs_1.default.readFileSync("./src/catalog.json", "utf-8"));
+        cart = new cart_1.Cart([], 0, [], productsCatalog);
     });
     test("should apply rules and validate outcomes after adding an attribute to Smartphone", () => {
         const product1 = new product_1.Product("SP003", "Smartphone", 900, 15, 1, {
@@ -185,7 +190,8 @@ describe("Updating rules and validating outcomes", () => {
 describe("Calculating total price and tax values", () => {
     let cart;
     beforeEach(() => {
-        cart = new cart_1.Cart([], 0, [], catalog_json_1.default);
+        const productsCatalog = JSON.parse(fs_1.default.readFileSync("./src/catalog.json", "utf-8"));
+        cart = new cart_1.Cart([], 0, [], productsCatalog);
     });
     test("should add Desk Lamp and Electric Bike and calculate total price and tax values", () => {
         const product1 = new product_1.Product("DL002", "Desk Lamp", 110, 22, 1, {

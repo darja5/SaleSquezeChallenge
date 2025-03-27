@@ -1,6 +1,7 @@
 # SaleSquezeChallenge
 
 A simple shopping cart system built with TypeScript to manage products, attributes, and dynamic pricing rules.
+Find more instruction on https://kb.salesqueze.com/s/4f82d75a-e4b0-4b4e-9ad3-a33c9f0a5842
 
 ## Project Description
 
@@ -24,7 +25,7 @@ To get started, clone the repository and install the required dependencies:
 
 ```bash
 # Clone the repository
-git clone https://github.com/darja5/SaleSquezeChallenge.git 
+git clone https://github.com/darja5/SaleSquezeChallenge.git
 
 # Install dependencies
 npm install
@@ -32,3 +33,4 @@ npm install
 # Run tests
 npm test
 
+```

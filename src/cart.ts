@@ -4,12 +4,30 @@ interface TaxValues {
   [taxRate: number]: number;
 }
 
+export interface CatalogProduct {
+  key: string;
+  title: string;
+  price: number;
+  tax: number;
+  attributes: CatalogAttribute[];
+  rules: any[];
+}
+
+interface CatalogAttribute {
+  key: string;
+  type: string;
+  values?: any;
+  default?: any;
+  script?: string;
+  dependsOn: string[];
+}
+
 export class Cart {
   constructor(
     private products: Product[],
     private totalPrice: number,
     private taxValues: TaxValues,
-    private catalog: any[],
+    private catalog: CatalogProduct[],
   ) {}
 
   //Adds a product to the cart by its catalog key
@@ -181,12 +199,15 @@ export class Cart {
               attributeKeyAlreadyExists == "" &&
               attributeValueAlreadyExists == undefined
             ) {
-              let targetCatalogProduct = this.catalog.find(
-                (element) => element.key === this.products[index].getProductKey,
-              );
-              let targetAttribute = targetCatalogProduct.attributes.find(
-                (att: any) => att.key === outcome.key,
-              );
+              let targetCatalogProduct: CatalogProduct | undefined =
+                this.catalog.find(
+                  (element: CatalogProduct) =>
+                    element.key === this.products[index].getProductKey,
+                );
+              let targetAttribute: CatalogAttribute | undefined =
+                targetCatalogProduct?.attributes.find(
+                  (att: CatalogAttribute) => att.key === outcome.key,
+                );
               let wantedValue: any;
               if (targetAttribute?.type != undefined) {
                 switch (targetAttribute.type) {
@@ -253,7 +274,7 @@ export class Cart {
       (element) => element.key === targetCartProduct.getProductKey,
     );
 
-    let productAttributeWithValue = targetCatalogProduct.attributes.find(
+    let productAttributeWithValue = targetCatalogProduct?.attributes.find(
       (attribute: any) => attribute.key === attributeKey,
     );
 
@@ -323,13 +344,13 @@ export class Cart {
     //check if there are attributes that are dependant on this added attribute and add them to product in the cart
     //if all dependant values are added
     let dependantAttributes: any = [];
-    targetCatalogProduct.attributes.map((att: any) => {
+    targetCatalogProduct?.attributes.map((att: any) => {
       if (att.key != attributeKey && att.dependsOn?.includes(attributeKey)) {
         dependantAttributes = [...dependantAttributes, att];
       }
     });
 
-    if(dependantAttributes != undefined){
+    if (dependantAttributes != undefined) {
       dependantAttributes.map((attr: any) => {
         let script = attr.script;
 
@@ -349,7 +370,7 @@ export class Cart {
     }
 
     //recursivly check if conditions apply => if yes apply outcomes
-    if (targetCatalogProduct.rules) {
+    if (targetCatalogProduct?.rules) {
       targetCatalogProduct.rules.map((rule: any) => {
         if (this.calculateConditions(rule.condition, cartIndex)) {
           this.applyOutComes(rule.outcomes, cartIndex);
